@@ -1,0 +1,73 @@
+package hospital.management.system;
+
+import net.proteanit.sql.DbUtils;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+
+public class Department extends JFrame {
+
+    Department() {
+        JPanel panel = new JPanel();
+        panel.setBounds(5, 5, 690, 490);
+        panel.setLayout(null);
+        panel.setBackground(new Color(90, 156, 163));
+        add(panel);
+
+        // Table and Scroll Pane
+        JTable table = new JTable();
+        table.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(20, 50, 650, 300);
+        panel.add(scrollPane);
+
+        // Load data from database
+        try {
+            conn c = new conn(); // Ensure conn class exists
+            String q = "select * from department"; // Your SQL query
+            ResultSet resultSet = c.statement.executeQuery(q);
+            table.setModel(DbUtils.resultSetToTableModel(resultSet));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Department label
+        JLabel label1 = new JLabel("Department");
+        label1.setBounds(100, 20, 120, 20);
+        label1.setFont(new Font("Tahoma", Font.BOLD, 14));
+        panel.add(label1);
+
+        // Phone Number label
+        JLabel label2 = new JLabel("Phone Number");
+        label2.setBounds(380, 20, 150, 20);
+        label2.setFont(new Font("Tahoma", Font.BOLD, 14));
+        panel.add(label2);
+
+        // Back button
+        JButton b1 = new JButton("BACK");
+        b1.setBounds(280, 380, 130, 30);
+        b1.setBackground(Color.BLACK);
+        b1.setForeground(Color.WHITE);
+        panel.add(b1);
+        b1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false); // Close this window
+            }
+        });
+
+        // Frame setup
+        setUndecorated(true); // Optional
+        setSize(700, 500);
+        setLayout(null);
+        setLocation(350, 250);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new Department();
+    }
+}
